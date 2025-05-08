@@ -1,0 +1,116 @@
+%*******************************************************
+% List of Figures and of the Tables
+%*******************************************************
+\clearpage
+% \pagestyle{empty} % Uncomment this line if your lists should not have any headlines with section name and page number
+\begingroup
+    \let\clearpage\relax
+    \let\cleardoublepage\relax
+    %*******************************************************
+    % List of Figures
+    %*******************************************************
+   \phantomsection
+    %\addtocontents{toc}{\protect\vspace{\beforebibskip}}%
+    \addcontentsline{toc}{chapter}{\hspace{1.5em}\listfigurename}
+    %\pdfbookmark[0]{\listfigurename}{lof}
+    \listoffigures
+
+    %\vspace{8ex}
+    \newpage
+    \cleardoublepage
+
+    %*******************************************************
+    % List of Tables
+    %*******************************************************
+    \phantomsection
+    \addcontentsline{toc}{chapter}{\hspace{1.5em}\listtablename}
+    %\pdfbookmark[0]{\listtablename}{lot}
+    \listoftables
+    \newpage
+    \cleardoublepage
+
+    %*******************************************************
+    % List of Models
+    %*******************************************************
+    \phantomsection
+    %\addcontentsline{toc}{chapter}{List of Models}
+    \renewcommand{\listtheoremname}{List of Models}
+    \addcontentsline{toc}{chapter}{\hspace{1.5em}\listtheoremname}
+    \newcommand{\onpage}[1]{\hspace{1.5em}\pageref{#1}}
+    %\pdfbookmark[0]{\listtheoremname}{lom}
+    %\listoftheorems
+    %\pdfbookmark[0]{\listtheoremname}{lom}
+    \newpage\cleardoublepage
+    \markboth{\spacedlowsmallcaps{\listtheoremname}}{\spacedlowsmallcaps{\listtheoremname}}
+    \chapter*{\listtheoremname}
+    \hspace{-1.0em}
+    \begin{tabular}{p{3.5em}l}
+        1, 5 & Dimerization \onpage{model:dim}, \pageref{model:dim2}\\
+        2 & Birth-Death Process \onpage{model:bd}\\
+        3 & Parallel independent dimerization \onpage{model:double_dim}\\
+        4 & Negative self-regulated gene expression \onpage{model:gexpr}\\
+        6 & Distributive Modification \onpage{model:dm}\\
+        7, 10, 13 & Exclusive Switch \onpage{model:es}, \pageref{model:excl_switch}, \pageref{model:excl_switch_2}\\
+        8 & Lac Operon \onpage{model:lac}\\
+        9 & Parallel Birth-Death Process \onpage{model:par_bd}\\
+        11 & p53 Oscillator \onpage{model:p53} \\
+        12 & Parallel Poisson Process \onpage{model:par_poisson} \\
+        14, 16 & Toggle Switch \onpage{model:hill_toggle}, \pageref{model:hill_toggle_rare} \\
+        15 & Epidemics Model \onpage{model:seir} \\
+        %16 & Competitive Spread \onpage{model:comp_spread}
+    \end{tabular}
+
+    %\vspace{8ex}
+    \newpage
+    \cleardoublepage
+    % \newpage
+
+%   %*******************************************************
+%   % List of Listings
+%   %*******************************************************
+%   %\phantomsection
+%   %\addcontentsline{toc}{chapter}{\lstlistlistingname}
+%   \pdfbookmark[1]{\lstlistlistingname}{lol}
+%   \lstlistoflistings
+
+%   \vspace{8ex}
+
+%*******************************************************
+% Acronyms
+%*******************************************************
+\phantomsection
+%\pdfbookmark[0]{Acronyms}{acronyms}
+\markboth{\spacedlowsmallcaps{Acronyms}}{\spacedlowsmallcaps{Acronyms}}
+\chapter*{Acronyms}
+\addcontentsline{toc}{chapter}{\hspace{1.5em}Acronyms}
+\begin{acronym}[RESTART]
+    \acro{CDF}{cumulative density function}
+    \acro{CME}{chemical master equation}
+    \acro{CRN}{chemical reaction network}
+    %\acro{CSL}{concurrent separation logic}
+    \acro{CV}{control variate}
+    \acro{CTMC}{continuous-time Markov chain}
+    %\acro{DNA}{deoxyribonucleic acid}
+    \acro{DTMC}{discrete-time Markov chain}
+    \acro{FPT}{first-passage time}
+    \acro{FSP}{finite state projection}
+    \acro{GMP}{generalized moment problem}
+    \acro{HMM}{hidden Markov model}
+    \acro{IS}{importance sampling}
+    \acro{IVP}{initial value problem}
+    \acro{LP}{linear program}
+    \acro{MCM}{method of conditional moments}
+    \acro{MFPT}{mean first-passage time}
+    \acro{MPM}{Markovian population model}
+    %\acro{MTL}{metric temporal logic}
+    \acro{ODE}{ordinary differential equation}
+    \acro{pCTMC}{population \ac{CTMC}}
+    \acro{RESTART}{repetitive simulation trials after reaching thresholds}
+    \acro{SEIR}{susceptible-exposed-infected-removed}
+    \acro{SDP}{semi-definite program}
+    \acro{SMC}{statistical model checking}
+    \acro{SSA}{stochastic simulation algorithm}
+    \acro{SRN}{stochastic reaction network}
+\end{acronym}
+
+\endgroup

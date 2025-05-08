@@ -1,0 +1,177 @@
+% **************************************************************************************************************
+% A Classic Thesis Style
+% An Homage to The Elements of Typographic Style
+%
+% Copyright (C) 2018 André Miede and Ivo Pletikosić
+%
+% If you like the style then I would appreciate a postcard. My address
+% can be found in the file ClassicThesis.pdf. A collection of the
+% postcards I received so far is available online at
+% http://postcards.miede.de
+%
+% License:
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program; see the file COPYING.  If not, write to
+% the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+% Boston, MA 02111-1307, USA.
+%
+% PLEASE SEE ALSO THE AUTHORS' NOTE REGARDING THIS LICENSE
+% IN THE DOCUMENTATION (ClassicThesis.pdf --> Chapter 1 / Chapter01.tex)
+% **************************************************************************************************************
+\RequirePackage{silence} % :-\
+    \WarningFilter{scrreprt}{Usage of package `titlesec'}
+    %\WarningFilter{scrreprt}{Activating an ugly workaround}
+    \WarningFilter{titlesec}{Non standard sectioning command detected}
+\documentclass[ twoside,openright,titlepage,numbers=noenddot,%1headlines,
+                headinclude,footinclude,cleardoublepage=empty,abstract=on,
+                BCOR=5mm,paper=b5,fontsize=11pt,
+		dvipsnames
+                ]{scrbook}
+
+%********************************************************************
+% Note: Make all your adjustments in here
+%*******************************************************
+\input{classicthesis-config}
+
+%********************************************************************
+% Bibliographies
+%*******************************************************
+\addbibresource{Bibliography.bib}
+\addbibresource[label=ownpubs]{Eigene.bib}
+
+%********************************************************************
+% Hyphenation
+%*******************************************************
+\hyphenation{Sprin-ger}
+\hyphenation{Mar-kov}
+\hyphenation{Mu-sta-fa}
+\hyphenation{IN-fi-ni-te}
+\hyphenation{tech-ni-ques}
+\hyphenation{Mom-ent}
+\hyphenation{Spie-ler}
+\hyphenation{Da-vid}
+\hyphenation{che-ck-er}
+\hyphenation{stea-dy}
+\hyphenation{Je-re-my}
+\hyphenation{con-tin-u-ous}
+\hyphenation{sto-chas-tic}
+\hyphenation{con-strain-ed}
+\hyphenation{re-fers}
+\hyphenation{mo-le-cules}
+
+% ********************************************************************
+% GO!GO!GO! MOVE IT!
+%*******************************************************
+\begin{document}
+\urlstyle{sf}
+\frenchspacing
+\raggedbottom
+\selectlanguage{american} % american ngerman
+%\renewcommand*{\bibname}{new name}
+%\setbibpreamble{}
+\pagenumbering{roman}
+\pagestyle{plain}
+%********************************************************************
+% Frontmatter
+%*******************************************************
+\frontmatter
+\include{FrontBackmatter/DirtyTitlepage}
+\include{FrontBackmatter/Titlepage}
+\include{FrontBackmatter/Titleback}
+%\cleardoublepage\include{FrontBackmatter/Dedication}
+%\cleardoublepage\include{FrontBackmatter/Foreword}
+\cleardoublepage\include{FrontBackmatter/Abstract}
+%\cleardoublepage\include{FrontBackmatter/Publications}
+\cleardoublepage\include{FrontBackmatter/Acknowledgments}
+\cleardoublepage\include{FrontBackmatter/Contents}
+%********************************************************************
+% Mainmatter
+%*******************************************************
+\mainmatter
+\cleardoublepage
+\pagestyle{scrheadings}
+\pagenumbering{arabic}
+%\setcounter{page}{90}
+% use \cleardoublepage here to avoid problems with pdfbookmark
+\part{Preliminaries}
+\cleardoublepage\include{Chapters/Introduction}
+\cleardoublepage\include{Chapters/Background}
+\ctparttext{
+	We use moment properties
+	to provide bounds on mean first-passage times and
+	to improve statistical estimation of different quantities.
+%%%%%%  In particular, we use the variance reduction technique
+%%%%%%  of \emph{linear control variates} in connection with these moment
+%%%%%%  constraints.
+}
+\part{Moment-Based Methods}\label{pt:moments}
+\cleardoublepage\include{Chapters/MFPT}
+\cleardoublepage\include{Chapters/CVinSRNs}
+\ctparttext{
+	We present a
+	state-space lumping scheme that aggregates states in a grid structure.
+	Approximations based on this lumping are used to iteratively refine relevant
+	and
+	truncate irrelevant parts of the state-space.
+	This way, the algorithm learns a well-justified finite-state
+	projection for different scenarios.
+}
+\part{Aggregation \textit{\&} Refinement}\label{pt:aggregation}
+\cleardoublepage\include{Chapters/Lumping}
+\cleardoublepage\include{Chapters/StationaryAgg}
+\cleardoublepage\include{Chapters/bridging}
+\cleardoublepage\include{Chapters/rare_event}
+%\ctparttext{
+	%Existing Foster-Lyapunov functions often give sets that are far
+	%larger necessary for a given probability bound.
+	%Here, we explore the possibility to improve upon such a function
+	%by \emph{local} alterations.
+	%This leaves the global properties --~and thereby its guarantees~--
+	%intact, while we obtain much tighter sets for
+	%the same probability bounds.
+%}
+%\part{Foster-Lyapunov Functions}
+%\cleardoublepage\include{Chapters/lya_aug.tex}
+\part{Concluding Remarks}
+\cleardoublepage\include{Chapters/Conclusion}
+% ********************************************************************
+% Backmatter
+%*******************************************************
+\appendix
+%\renewcommand{\thechapter}{\alph{chapter}}
+\part{Appendix}
+\include{Chapters/cv_appendix}
+\backmatter
+% \sloppy alternative from https://latex.org/forum/viewtopic.php?t=21170
+%\tolerance 1414
+%\hbadness 1414
+%\emergencystretch 1.5em
+%\hfuzz 0.3pt
+%\widowpenalty=10000
+%\vfuzz \hfuzz
+%\raggedbottom
+\begingroup
+\setlength{\bibitemsep}{1ex}
+\cleardoublepage\include{FrontBackmatter/Bibliography}
+\endgroup
+\cleardoublepage
+%********************************************************************
+% Other Stuff in the Back *******************************************
+\cleardoublepage\include{FrontBackmatter/ListOfFigures}
+%\cleardoublepage\include{FrontBackmatter/Colophon}
+%\cleardoublepage\include{FrontBackmatter/Declaration}
+% ********************************************************************
+% Game Over: Restore, Restart, or Quit?
+%*******************************************************
+\end{document}
+% ********************************************************************

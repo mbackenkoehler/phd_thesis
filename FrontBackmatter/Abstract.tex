@@ -1,0 +1,33 @@
+%*******************************************************
+% Abstract
+%*******************************************************
+%\renewcommand{\abstractname}{Abstract}
+\pdfbookmark[1]{Abstract}{Abstract}
+% \addcontentsline{toc}{chapter}{\tocEntry{Abstract}}
+% \begingroup
+% \let\clearpage\relax
+% \let\cleardoublepage\relax
+% \let\cleardoublepage\relax
+
+\chapter*{Abstract}
+Markovian population models are a powerful paradigm to describe processes of stochastically interacting agents. Their dynamics is given by a continuous-time Markov chains over the population sizes. Such large state-spaces make their analysis challenging.
+
+In this thesis, we develop methods for this problem class leveraging their structure. We derive linear moment constraints on the expected occupation measure and exit probabilities. In combination with semi-definite constraints on moment matrices, we obtain a convex program. This way, we are able to provide bounds on mean first-passage times and reaching probabilities. We further use these linear constraints as control variates to improve Monte Carlo estimation of different quantities. Two different algorithms for the construction of efficient variate sets are presented and evaluated.
+
+Another set of contributions is based on a state-space lumping scheme that aggregates states in a grid structure. Based on the probabilities of these approximations we iteratively refine relevant and truncate irrelevant parts of the state-space. This way, the algorithm learns a well-justified finite-state projection for different scenarios.
+
+\cleardoublepage
+
+\begin{otherlanguage}{ngerman}
+\pdfbookmark[1]{Zusammenfassung}{Zusammenfassung}
+\chapter*{Zusammenfassung}
+Markowsche Populationsmodelle sind ein leistungsfähiges Paradigma zur Beschreibung von Prozessen stochastisch interagierender Akteure. Ihre Dynamik ist durch eine zeitkontinuierliche Markow-Kette über die Populationsgrößen gegeben. Solch große Zustandsräume machen ihre Analyse zu einer Herausforderung.
+
+In dieser Arbeit entwickeln wir Methoden für diese Problemklasse, indem wir ihre Struktur nutzen. Wir leiten lineare Momentbeschränkungen für das erwartete Besetzungsmaß und die Austrittswahrscheinlichkeiten ab. In Kombination mit semidefiniten Nebenbedingungen für Momentmatrizen erhalten wir ein konvexes Programm. Auf diese Weise sind wir in der Lage, Schranken für mittlere Erstdurchlaufzeiten und Erreichbarkeitswahrscheinlichkeiten zu setzen. Außerdem verwenden wir diese linearen Nebenbedingungen als Kontrollvariablen, um die Monte-Carlo-Schätzung verschiedener Größen zu verbessern. Es werden zwei verschiedene Algorithmen für die Konstruktion effizienter Variablensätze vorgestellt und bewertet.
+
+Eine weitere Gruppe von Beiträgen basiert auf einem Aggregationsschema, das Zustände in einer Gitterstruktur zusammenfasst. Auf der Grundlage der Wahrscheinlichkeiten dieser Näherungen verfeinern wir iterativ relevante und schneiden irrelevante Teile des Zustandsraums ab. Auf diese Weise erlernt der Algorithmus eine gut begründete endliche Zustandsprojektion für verschiedene Szenarien.
+\end{otherlanguage}
+
+% \endgroup
+
+\vfill

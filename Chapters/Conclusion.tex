@@ -1,0 +1,171 @@
+\chapter{Conclusion}
+While \aclp{MPM} are a versatile modeling framework, their analysis
+--~especially wrt.\ their stochasticity~-- poses a significant challenge.
+% Talk more about the stochasticity and give examples of model
+% queries involving stochasticity.
+The most pressing issue is the large state space that needs to be considered.
+\marginpar{The large state-space is often exacerbated by the curse of
+dimensionality.}
+This thesis has proposed several techniques to tackle some parts of
+this challenge.
+The main advantage of \acp{CTMC} underlying \acp{MPM} is their
+structured nature due to the typically simple propensity functions.
+The first set of methods uses moment constraints which can be
+directly given in terms of stoichiometry and propensity functions.
+The second set of approaches is more heuristic in nature.
+Here, we leverage the typically smooth structure of propensity
+functions to derive an aggregation scheme on the state-space.
+%All of these techniques use the uniform structure of the \acp{CTMC}
+% underlying an \ac{MPM}.
+In this way, both method classes demonstrated in this thesis rely on
+the structure induced by the \ac{MPM} formalism.
+
+The derivation of moment equations yields constraints that have shown
+to be useful in two contexts.
+In the context of mean first-passage time bounds, they formed linear
+constraints on the moments of the process and the exit location measure.
+Together with semi-definite constraints, this yields a hierarchy of
+convex optimization problems.
+This hierarchy yields convergent bounds on the reaching probability
+and the mean first-passage time on a large class of problems.
+While this approach still has limitations in scalability due to its
+stiffness, it opens up new and more rigorous applications for
+moment-based approaches.
+Typically, moment-based analysis is associated with ad-hoc
+approximations that are necessary to obtain a closed \ac{ODE} system.
+With approaches based on mathematical optimization the problem we can
+elegantly evade the problem of infinite moment equation hierarchies.
+This enables an analysis of the moments as a true approximation with
+reliable results.
+
+Another use of the unclosed moment equations has been demonstrated in
+the context of Monte Carlo estimation.
+Here too, we do not need to apply a closure scheme.
+When used as \aclp{CV} such constraints yield an alternative unbiased
+estimator with lower variance.
+Using heuristics and sequential Monte Carlo methods, we demonstrated
+methods to construct efficient constraint sets.
+Often stochastic simulation and moment-driven analysis are seen as
+competing methods.
+This work marries the insights of moment dynamics with the
+statistical guarantees of Monte Carlo estimation using the \ac{SSA}.
+
+The aggregation approach takes advantage of the fact that often
+propensity functions result in a smooth ``landscape of transition
+rates'' across the state-space.
+This motivates an aggregation scheme that approximates a uniform
+distribution inside macro-states.
+\marginpar{In particular, polynomial propensity functions are often
+suited to this approach.}
+Deriving closed forms for the transition rates between those states
+significantly reduces the computational load compared to the original model.
+We have demonstrated the usefulness of this aggregation scheme in the
+domains of stationary distributions, bridging distributions, and the
+use in rare event sampling.
+The first two methods are use a refinement algorithm that splits
+macro-states based on a target distribution.
+This target distribution is the approximate stationary and the
+bridging distribution, respectively.
+The ultimate goal of both methods is the identification of a
+truncation on the original, non-approximated state-space tailored to
+the task at hand.
+Thus both approaches start out with an ad-hoc approximation and
+result in a truncation suited for rigorous analysis.
+In the final contribution, we combine the approximation with
+importance sampling.
+Despite the approximative nature of the aggregation, the resulting
+estimate retains its properties.
+
+% all methods are true approximations
+
+%\section{Contribution}
+%\emph{Main methodology}: The uniform structure of population models
+% enables analysis using aggregate information (in the state domain
+% or by using moment statistics)
+%\begin{itemize}
+%\item Proposed novel methodologies
+%\item spanning from rigorous to more heuristic
+%\item hate on ad-hoc heuristics a little (i.e.\ moment closures)
+%\item all methods have an approximating relationship with the actual
+% model (convergence to the actual dynamics) -- illustrate!
+%\end{itemize}
+\section{Outlook}
+All ideas presented in this thesis provide starting points for
+further research and development.
+
+\paragraph{Mean First-Passage Times via Semi-Definite Programming}
+The \ac{SDP} approach for \acp{MFPT} presented in \autoref{ch:MFPT}
+improved in terms of scalability.
+Here, scalability mainly refers to the problem of large populations
+(or time horizons).
+Such large values increase the moments which tend to grow
+exponentially with their order.
+The resulting stiffness can be problematic for off-the-shelf \ac{SDP} solvers.
+Better performance could be achieved by a suitable re-scaling of the
+model or stronger cooperation with domain experts in mathematical
+optimization to pinpoint problems more precisely.
+Another interesting direction is the study of Hausdorff constraints
+sketched in \autoref{sec:hausdorff}.
+Since these are linear moment constraints, they can easily be
+incorporated into the \ac{SDP} formulation.
+
+\paragraph{Control Variates}
+Control variates for Monte Carlo (\autoref{ch:cvinsrns} estimation
+  offer a tremendous design space, both algorithmically and in terms
+  of the constraints themselves.
+  Depending on the quantity of interest, non-polynomial test
+  functions might provide better correlations.
+  The control variate optimization, based on sequential Monte Carlo,
+  could perhaps be replaced by a search using approximations such as
+  moment closures.
+  A challenge in designing \acp{CV} and their algorithmic
+  optimization is always elegance.
+  Keeping the algorithm flexible, while keeping the number of
+  parameters low is difficult, but crucial.
+
+  \paragraph{Aggregation}
+  Similarly to the \aclp{CV}, the aggregation scheme offers quite a
+  few possibilities for further experimentation.
+  For example, a dynamic aggregation-disaggregation scheme could be
+  used for forward analysis similar to dynamic truncations
+  \parencite{andreychenko2011parameter}.
+  Based on the approximate probability distribution states could be
+  either aggregated or disaggregated.
+  This splitting could be based on how how flat the distribution is
+  locally, i.e.\ how close it is to a uniform distribution in some region.
+  Another possible modification would be to define states more
+  flexible than hyper cubes.
+  %Other shapes might be better suited for this kind of approximation.
+  While this likely would make finding a closed-form expression of
+  transition rates harder or impossible, it might be a useful trade.
+  For both of these points the design space is quite large.
+
+  %\paragraph{Technical}
+  %\begin{itemize}
+  %\item aggregation: Schemes more flexible than hyper-cubes
+  % (rectangles instead of cubes, other shapes altogether)
+  %\item More throgough investigation / further development of
+  % sketched ideas (Lyapunov synthesis, Rare event sampling)
+  %\end{itemize}
+  %\paragraph{General}
+  \vspace{1em}
+  The main challenge in the study of stochastic reaction networks
+  today is the connection of methods to practitioners and their problems.
+  A large area body of research is devoted to methods precisely
+  analyzing \acp{SRN}.
+  It is a danger that the practical value of proposed methods is a
+  secondary concern.
+  For these methods to be useful, more dialog is needed with domain
+  experts to understand the challenges.
+  Only then can the new approaches --~such as the ones presented in
+  this thesis~-- develop practical uses.
+  %\begin{itemize}
+  %    \item Method and model development should be driven more by
+  % practical problems (what do practicioners actually need?)
+  %  \item Prove methods on some domain; drive research using new possibilities
+  %  \item Re-assess
+  %\end{itemize}
+  %\paragraph{Last Message}
+  %\begin{itemize}
+  %\item Lots of things are possible --- go ahead and apply them!
+  %\end{itemize}

@@ -1,0 +1,406 @@
+\chapter{Introduction}
+%\begin{center}
+%Machines were mice and men were lions\\
+%once upon a time.\\
+%But now that it's the opposite\\
+%it's twice upon a time.\\
+%\medskip
+%\emph{--- Moondog}
+%\end{center}
+
+%The scientific method revolves around the finding and testing
+% falsifiable hypotheses.
+%Such hypotheses can be simple statements such as water being liquid
+% at room temperature and an average air pressure.
+%All hypotheses involve some sort of model~--~some more well-defined
+% than others.
+Any model is an abstraction of reality.
+Often this abstraction aims to capture a few aspects of interest
+while ignoring others.
+Modeling often is a delicate balance of adequate representation and abstraction.
+The goal of the former is to capture all the relevant behaviors and
+effects in a model.
+Useful Abstractions benefit both explainability and analysis.
+This balance between faithfully capturing reality and enabling an
+analysis is at the core of all modeling efforts.
+%starts with a number of assumptions that simplify the model enough
+% to reasonably try to draw conclusions.
+
+In the natural sciences, we often deal with concentrations of
+different ``things''.
+This could be the amount of some substance or the number of agents
+waiting for some service.
+Traditionally, \aclp{ODE} are the most popular paradigm for dynamical models.
+\Aclp{ODE} have two inherent simplifications: Firstly, they impose a
+continuous state space and, secondly, they are deterministic.
+
+The first assumption is appropriate in many circumstances.
+For example, chemical concentrations can usually be treated as
+continuous if the number of molecules in a given volume is
+large.\marginpar{In many chemical experiments, for example, huge
+numbers of molecules are present.}
+With large populations, the influence of discrete effects decreases.
+In such cases, mean-field analyses are an adequate and efficient tool
+\parencite{bortolussi2013continuous}.
+However, this simplification fails if discrete effects are central to the model.
+Consider, for example, the extinction of a species in the classical
+Lotka-Volterra predator-prey model \parencite{lotka1925elements}.
+In this case, the distinction between a low concentration and a zero
+concentration becomes relevant again:
+If the predator, e.g.\ the foxes, becomes extinct the model's dynamic
+changes dramatically.
+Such an event can be missed by the deterministic model which instead
+gives a population size larger than zero but much smaller than a
+single individual.
+\Citeauthor{mollison1991dependence} calls this problem humorously the
+\emph{atto-fox} problem \parencite{mollison1991dependence}.
+%Another property that is lost when ignoring stochasticity is the
+% dampened oscillation.
+%Due to the stochastic phase shifts the mean will usually converge to
+% a fixed point (ignoring die-out).
+
+The second issue, i.e.\ the issue of determinism, is often closely
+connected to the first.
+While the issue of a deterministic vs.\ a stochastic world is more an
+issue of philosophy and physics, stochasticity undoubtedly provides
+an excellent abstraction for many phenomena.
+Staying with the previous example, it makes sense to consider the
+dying out of the predatory species to be stochastic.
+That means, there is a non-zero probability for both, survival and extinction.
+Answering questions about such probabilities would be one of the
+central functions of such a model.
+
+The previous example falls in the realm of systems biology.
+There are numerous applications in systems biology that benefit from
+a discrete and stochastic description
+\parencite{wilkinson2018stochastic,BuchWolkenhauer}.
+Many biological processes such as cell functions are driven by
+stochastic effects.
+Consider for example the oscillatory processes such as the circadian
+cycle \parencite{asgari2019mathematical} or even classical models
+such as the famous predator-prey model \parencite{lotka1925elements}.
+Another phenomenon central to many biological functions is a
+switch-like behavior.
+
+\Acfp{MPM} are a versatile framework capturing stochastic
+interactions between groups of identical agents.
+%Simplify representation for more efficiency per computation.
+States are discrete counts of agents and reaction events
+stochastically change these counts.
+Interactions between agents commonly referred to as reactions, happen
+at exponentially distributed random times.
+Their rate depends only on the current system state, i.e.\ the population sizes.
+This kind of population model introduces the major assumption that
+all agents behave similarly.
+Similarity entails both similar behavior of each agent and a
+homogenous mixture of all agents.\marginpar{Often the term
+\emph{well-stirredness} is used to express this.}
+This feature is a \emph{Markov property} and
+therefore \acp{MPM} form a special class of structured \acp{CTMC}
+\parencite{anderson2012continuous}.
+Accordingly, the Kolmogorov equations describes the time-evolution of
+the corresponding probability distribution.\marginpar{In the context
+of (bio-)chemistry this is often called the \emph{chemical master equation}.}
+For small finite chains it is easy to compute accurate transient
+probabilities using the Kolmogorov equation.
+The \acp{CTMC} underlying most population models, however, can have
+large and often unbound populations.
+That makes their numerical solution extremely challenging.
+Many problems occuring in a wide range of areas such as
+chemistry~\parencite{gillespie1977exact},
+epidemiology~\parencite{mode2000stochastic},    queuing
+systems~\parencite{breuer2003markov},
+finance~\parencite{pardoux2008markov}, and performance
+analysis~\parencite{bortolussi2013continuous,gast2019} can be
+described using this formalism.
+
+Typical research questions when using such models target the forward behavior.
+That is the problem of looking into the future given a starting distribution.
+For example, consider determining the probability that a system stays
+in some subset of the state space for a fixed amount of time.
+Mainly, we target these kinds of questions, but in
+\autoref{ch:bridging} we look at a closely related class of problems
+-- the bridging problem.
+In this problem, both the initial and the terminal distribution are fixed.
+\marginpar{This scenario is akin to the smoothing problem from
+stochastic filtering.}
+Such questions are of particular interest in multimodal models to
+determine the switching behavior between different attracting regions.
+A third area is the question of long-term behavior.
+In \emph{ergodic} models, the forward probabilities converge to a
+stable equilibrium distribution which is independent of the initial
+distribution.\turnto{sec:stationary_dist}
+%\section*{Main Research Questions}
+%\paragraph{Transition Problems} How does the process get from state
+% $A$ to state $B$?
+%\paragraph{Forward Behavior} How does the process behave given an
+% initial state?
+%\paragraph{Approximations} How can we use moments to tackle the
+% above questions?
+%\paragraph{Applications} Motivate problems through multimodal behaviors.
+
+\section{Contributions}
+The goal of this thesis is to develop methods to analyze \acp{MPM}.
+A particular focus of these methods is scalability.
+All methods developed in this thesis aim to provide means to more
+efficiently analyze such systems -- or at least uncover paths that
+can lead to scalable methodologies.
+Importantly, these methods are \emph{reliable} approximations: There
+are no ad-hoc approximations influencing estimates.
+The methodological theme is to leverage (approximate) distributional
+information such as moment equations and state-space aggregation to
+obtain good approximations.
+
+The first contribution proposes an augmentation scheme for simple
+Lyapunov functions in \autoref{ch:lyapunov}.
+Therein we suggest locally altering valid proposal Lyapunov functions.
+Such local alterations are subject to very few constraints and
+Thus methods such as neural networks are applicable.
+The resulting sets can be much smaller.
+
+In \autoref{pt:moments} we focus on moment-based techniques.
+Methods to analyze such models without ignoring their inherent
+stochasticity received much attention in recent years.
+When facing state spaces that are too large to handle using the
+Kolmogorov equation directly, stochastic simulations
+\parencite{gillespie1977exact} provide an alternative path.
+Such simulations have the advantage of providing an accurate
+approximation of the process.
+That is, they converge in the limit of simulation runs.
+Many extensions of stochastic simulations and Monte Carlo estimation
+have been proposed.
+In \autoref{ch:cvinsrns} we develop such an extension for variance
+reduction of stochastic estimates.
+This variance reduction exploits moment dynamics to derive
+constraints on population averages.
+These constraints are a correction to the estimate.
+The corrected estimator is unbiased and has a variance lower or equal
+to the one of the uncorrected estimator.
+
+We use similar moment constraints  --~in combination with general
+moment constraints~-- to formulate convex optimization problems.
+This way, we compute rigorous bounds on reaching probabilities and \aclp{MFPT}.
+This approach is developed in \autoref{ch:MFPT}.
+Fortunately, both of these moment-based approaches can do without any
+moment closures
+and thereby avoid any ad-hoc approximations.
+%\begin{itemize}
+%\item Moment closures, in contrast, suck because they are (mostly)
+% not justified at all
+%\item sigma expansion
+%\item langevin equation
+%\item Moment based stuff
+%\item Hybrid methods
+%\end{itemize}
+
+In \autoref{pt:aggregation} we use a hyper cube state-space
+aggregation scheme to gain a rough understanding of the dynamics.
+The aggregation is then further refined (\autoref{ch:statagg} and
+\autoref{ch:bridging}) or used to guide stochastic simulations
+(\autoref{ch:is}).
+
+%aspects
+%\begin{itemize}
+%\item Brownian motion is a physical motivation for memoryless property
+%\end{itemize}
+%Story:
+%\begin{itemize}
+%\item Goal: make these models ``analyzable''
+%\item Further the effort of finding scalable methods which can
+% analyze the stochasticity
+%\item Methods should be \emph{reliable}
+%\item All methods developed here, are or yield approximations in the
+% pure mathematical sense
+%\item They converge to the ``true'' value
+%\item The theme connecting all approaches is to connect
+% (approximate) distributional information such as moment equations
+% and state-space lumping with methods yielding such approximations
+%\end{itemize}
+%% MFPT bounds
+
+%This subclass of \acfp{CTMC}  is used
+%to describe the stochastic dynamics of systems in various domains.
+%Prominent applications are chemical reaction networks in quantitative
+%biology~\parencite{BuchWolkenhauer},
+%epidemic spreading~\parencite{porter2016dynamical}, performance
+% analysis  of technical and
+%information systems~\parencite{bortolussi2013continuous,gast2019} as
+% well as the behavior of
+%collective adaptive systems~\parencite{bernardo2016}.
+
+%% Stationary aggregation
+
+%In many areas of science, stochastic models  of interacting
+% populations can describe systems in which the discrete population
+% sizes evolve stochastically in continuous time.
+%Such problems naturally occur in a wide range of areas such as
+% chemistry~\parencite{gillespie1977exact}, systems
+% biology~\parencite{wilkinson2018stochastic,BuchWolkenhauer},
+% epidemiology~\parencite{mode2000stochastic} as well as    queuing
+% systems~\parencite{breuer2003markov} and
+% finance~\parencite{pardoux2008markov}.
+
+%% Bridging
+
+%\Acp{MPM} are widely used to model the time evolution of complex
+%discrete phenomena in continuous time. Such problems naturally occur
+% in a wide range of areas such as
+% chemistry~\parencite{gillespie1977exact}, systems
+% biology~\parencite{wilkinson2018stochastic,BuchWolkenhauer},
+% epidemiology~\parencite{mode2000stochastic} as well as    queuing
+% systems~\parencite{breuer2003markov} and
+% finance~\parencite{pardoux2008markov}.
+%% The Markov property renders model analysis   feasible but requires
+% a complete description of the current state
+%% to describe the future behavior of the chain.
+%In many applications, an \ac{MPM} describes the stochastic
+% interaction of populations of agents.
+%%and therefore exhibits a population structure.
+%The state variables are counts of individual entities of different populations.
+
+%% LCVs
+
+%Markovian Population Models that are used to describe cellular
+% processes are often subject to inherent stochasticity.
+%The dynamics of gene expression, for instance, is influenced by
+%single random events (e.g.\ transcription factor binding) and
+%hence, models that take this randomness into account must monitor
+%discrete molecular counts and reaction events that change these counts.
+%Discrete-state continuous-time Markov chains have successfully  been
+%used to describe  networks of chemical reactions
+%over time that correspond to the basic events of such processes.
+%The time-evolution of the corresponding probability distribution is
+%given by the chemical master equation, whose numerical solution is
+%extremely challenging because of the enormous size of the underlying
+%state-space.
+
+\section{Organization}
+\autoref{fig:chap_deps} provides an overview of the dependencies
+between chapters.
+All contributions presented in this thesis are related to \aclp{MPM}.
+Therefore the background chapter, i.e.\ \autoref{ch:background} is relevant
+to all later parts of the thesis.
+In \autoref{pt:moments}, we present methods based on moment constraints.
+There is a connection between \autoref{ch:MFPT} and
+\autoref{ch:cvinsrns} in their shared linear constraints on temporal moments.
+The prerequisite for \autoref{ch:statagg} and \autoref{ch:bridging}
+is the aggregation
+technique presented in \autoref{ch:lumping}.
+The conceptual connection between the bridging problem
+(\autoref{ch:bridging}) and the rare event sampling (\autoref{ch:is})
+lies in both, its setting and the utilization of backwards probabilities.
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}
+    \begin{scope}
+      \path[mindmap,concept color=gray!25,text=black,level 1
+        concept/.append style =
+      {sibling angle=40}]
+      node[concept] {\autoref{ch:background}\\Markovian\\population\\models}
+      [clockwise from=-30]
+      %child[concept]{
+      %node[concept] (lya) {\autoref{ch:lyapunov}\\Lyapunov functions}
+      %}
+      child[concept] {
+        node[concept] {\autoref{ch:lumping}\\Aggregation}
+        [clockwise from=35]
+        child[concept] {
+          node[concept] (stat) {\autoref{ch:statagg}\\Stationary behavior}
+        }
+        child[concept] {
+          node[concept] (bridge) {\autoref{ch:bridging}\\Bridging problem}
+        }
+        child[concept] {
+          node[concept] (rare) {\autoref{ch:is}\\Rare events}
+        }
+      }
+      child[concept] {
+        node[concept] (cv) {\autoref{ch:cvinsrns}\\Control variates}
+      }
+      child[concept] {
+        node[concept] (mfpt) {\autoref{ch:MFPT}\\Bounding \acsfont{MFPT}s}
+      }
+      ;
+      \begin{pgfonlayer}{background}
+        \draw [concept connection] (cv) edge (mfpt);
+        \draw [concept connection] (bridge) edge (rare);
+        %\draw [concept connection] (lya) edge (stat);
+      \end{pgfonlayer}
+    \end{scope}
+    %    \begin{pgfonlayer}{background}
+    %  %\draw [draw=gray!25,fill=gray!25, decorate,decoration=circle
+    % connection bar]
+    %            \path (cv)
+    % to[draw=gray!25,color=gray!25,fill=gray!25, circle connection bar] (mfpt);
+    %%     \draw[circle connection bar]
+    %%%%% (cv) edge (mfpt);
+    %    \end{pgfonlayer}
+  \end{tikzpicture}
+  \caption{\label{fig:chap_deps}Chapter dependencies.}
+\end{figure}
+
+%*******************************************************
+% Publications
+%*******************************************************
+\section{Previous Publications}%\graffito{This is just an early
+% --~and currently ugly~-- test!}
+The ideas and much of the presented results have appeared previously
+in the following publications.
+As such, the content of most chapters has undergone peer-review and
+been published in various conference proceedings.
+The publications and their respective sections are as indicated below.
+
+\begin{itemize}
+
+  \item \autoref{ch:MFPT} has with minor differences been published as
+    \begin{quote}
+      \fullcite{backenkohler2019bounding}.
+    \end{quote}
+    The approach was conceived by M.\ B.
+    Author M.\ B.\ performed the implementation and evaluation with
+    feedback from the other authors.
+    All authors contributed to the text.
+    The Hausdorff moments, presented in \autoref{sec:hausdorff},
+    provide alternative moment constraints.
+    This method was not subject of the above publication.
+
+  \item \autoref{ch:cvinsrns} has with minor differences been published as
+    \begin{quote}
+      \fullcite{backenkohler2019control}.
+    \end{quote}
+    The control variate approach was conceived by M.\ B.\ and V.\ W.
+    The refinement algorithm was developed during discussions of all authors.
+    Author M.\ B.\ performed the implementation and evaluation with
+    feedback from the other authors.
+    All authors contributed to the text.
+
+    The contents of \autoref{sec:splitting} have been published in the article
+    \begin{quote}
+      \fullcite{backenkohler2021variance}.
+    \end{quote}
+    The prior content of the chapter also includes minor changes
+    based on this extension.
+    The idea of the resampling algorithm was developed during
+    discussions of all authors.
+    Author M.\ B.\ performed the implementation and evaluation with
+    feedback from the other authors.
+    All authors contributed to the text.
+
+  \item \autoref{ch:statagg} has with minor differences been published as
+    \begin{quote}
+      \fullcite{backenkohler2021abstraction}.
+    \end{quote}
+    The lumping approach was conceived by M.\ B.
+    All authors contributed to the text.
+
+  \item \autoref{ch:bridging} has with minor differences been published as
+    \begin{quote}
+      \fullcite{backenkohler2020analysis}.
+    \end{quote}
+\end{itemize}
+The lumping approach was conceived by M.\ B.
+All authors contributed to the text.
+\autoref{ch:lumping} is in large part based on this and the latter
+two publication above.
+\autoref{ch:background} contains introductory material and examples
+from the two publications above.
